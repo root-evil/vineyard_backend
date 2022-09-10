@@ -1,3 +1,4 @@
+using System.Net;
 using System.Reflection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -5,7 +6,7 @@ using Microsoft.OpenApi.Models;
 using vineyard_backend.Services;
 using vineyard_backend.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+var Port = int.Parse(Environment.GetEnvironmentVariable("VINEYARD_APP_PORT") ?? "0");
 
 var version = new VersionInfo
 {
@@ -13,6 +14,16 @@ var version = new VersionInfo
     Version = Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "undefined",
     Start = DateTime.UtcNow,
 };
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel((context, serverOptions) =>
+{
+    serverOptions.Listen(IPAddress.Any, Port, listenOptions =>
+    {
+        listenOptions.UseConnectionLogging();
+    });
+});
 
 builder.Services.AddSingleton(x => new VersionService(version));
 

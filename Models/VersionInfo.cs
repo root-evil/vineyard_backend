@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace vineyard_backend.Models;
 
-public class VersionInfo
+public record VersionInfo
 {
     public string? Name { get; set; }
     public string? Version { get; set; }
