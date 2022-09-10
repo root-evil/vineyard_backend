@@ -44,6 +44,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseHttpLogging();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
     {
