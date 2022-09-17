@@ -1,12 +1,23 @@
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Net;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
+using vineyard_backend.Context;
 using vineyard_backend.Services;
 using vineyard_backend.Models;
 
-var Port = int.Parse(Environment.GetEnvironmentVariable("VINEYARD_APP_PORT") ?? "0");
+var Port = int.Parse(Environment.GetEnvironmentVariable("VINEYARD_APP_PORT") ?? "3000");
+
+string dbConnection = "Server=51.250.23.5;Port=9003;Database=vino;user id=postgres;password=root;";
 
 var version = new VersionInfo
 {
@@ -24,10 +35,14 @@ builder.WebHost.ConfigureKestrel((context, serverOptions) =>
         listenOptions.UseConnectionLogging();
     });
 });
+builder.Services.AddDbContextPool<VineContext>(options => options.EnableSensitiveDataLogging().UseNpgsql(dbConnection));
 
 builder.Services.AddSingleton(x => new VersionService(version));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     {
@@ -42,8 +57,18 @@ builder.Services.AddSwaggerGen(options =>
     }
 );
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+        });
+});
+
 var app = builder.Build();
 
+app.UseCors();
 app.UseHttpLogging();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
