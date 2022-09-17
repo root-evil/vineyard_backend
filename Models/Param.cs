@@ -16,8 +16,8 @@ namespace vineyard_backend.Models
         public double? max_relief_slope { get; set; }
         public double? avg_relief_slope { get; set; }
         public double? avg_sunny_days { get; set; }
-        public double? mix_sunny_days { get; set; }
-        public double? man_sunny_days { get; set; }
+        public double? min_sunny_days { get; set; }
+        public double? max_sunny_days { get; set; }
         public int? water_seasonlyty { get; set; }
         public bool? forest { get; set; }
         public string? floodedMonthsId { get; set; }

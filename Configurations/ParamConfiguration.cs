@@ -44,10 +44,10 @@ namespace vineyard_backend.Configuration
                 .HasColumnName("max_relief_slope");
             entity.Property(e => e.avg_sunny_days)
                 .HasColumnName("avg_sunny_days");
-            entity.Property(e => e.mix_sunny_days)
-                .HasColumnName("mix_sunny_days");
-            entity.Property(e => e.man_sunny_days)
-                .HasColumnName("man_sunny_days");
+            entity.Property(e => e.min_sunny_days)
+                .HasColumnName("min_sunny_days");
+            entity.Property(e => e.max_sunny_days)
+                .HasColumnName("max_sunny_days");
             entity.Property(e => e.water_seasonlyty)
                 .HasColumnName("water_seasonlyty");
 
