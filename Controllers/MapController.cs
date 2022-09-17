@@ -31,6 +31,11 @@ public class MapController : ControllerBase
     public async Task<MapResponse> GetPolygons(
         CancellationToken cancellationToken,
         [FromQuery] int? regionId = null,
+        [FromQuery] int limit = 100,
+        [FromQuery] long? minArea = null,
+        [FromQuery] long? maxArea = null,
+        [FromQuery] long? minFreeArea = null,
+        [FromQuery] long? maxFreeArea = null,
         [FromQuery] double? min_relief_aspect = null,
         [FromQuery] double? max_relief_aspect = null,
         [FromQuery] double? min_relief_height = null,
@@ -46,6 +51,14 @@ public class MapController : ControllerBase
         var queryPolygons = vineContext.Polygons.AsNoTracking();
         var queryMarkers = vineContext.Markers.AsNoTracking();
 
+        if(minArea != null)
+            queryPolygons = queryPolygons.Where(x => x.area > minArea);
+        if(maxArea != null)
+            queryPolygons = queryPolygons.Where(x => x.area < maxArea);
+        if(minFreeArea != null)
+            queryPolygons = queryPolygons.Where(x => x.freeArea > minFreeArea);
+        if(maxFreeArea != null)
+            queryPolygons = queryPolygons.Where(x => x.freeArea < maxFreeArea);
         if(regionId != null)
         {
             queryPolygons = queryPolygons.Where(x => x.regionId == regionId);
@@ -105,7 +118,7 @@ public class MapController : ControllerBase
         }
 
 
-        var polygons = await queryPolygons.ToArrayAsync(cancellationToken);
+        var polygons = await queryPolygons.OrderByDescending(x => x.area).Take(limit).ToArrayAsync(cancellationToken);
         var markers = await queryMarkers.ToArrayAsync(cancellationToken);
 
         var allCenters = polygons.Select(x => x.center).ToList();
