@@ -28,7 +28,7 @@ public class ParamsController : ControllerBase
     [HttpGet("/params")]
     public async Task<IEnumerable<Param>> GetParams()
     {
-        return await vineContext.Prams.AsNoTracking().Include(x => x.Details).ToArrayAsync();
+        return await vineContext.Prams.AsNoTracking().ToArrayAsync();
     }
 
     [HttpGet("/params/{polygonId}")]
