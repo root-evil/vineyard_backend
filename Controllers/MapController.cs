@@ -14,12 +14,12 @@ namespace vineyard_backend.Controllers;
 [ApiController]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
-public class PolygonsController : ControllerBase
+public class MapController : ControllerBase
 {
-    private readonly ILogger<PolygonsController> logger;
+    private readonly ILogger<MapController> logger;
     private readonly VineContext vineContext;
 
-    public PolygonsController(ILogger<PolygonsController> logger, VineContext vineContext)
+    public MapController(ILogger<MapController> logger, VineContext vineContext)
     {
         this.logger = logger;
         this.vineContext = vineContext;
