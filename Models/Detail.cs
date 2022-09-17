@@ -5,12 +5,12 @@ namespace vineyard_backend.Models
     {
         public int id { get; set; }
         public string date { get; set; }
-        public decimal tavg { get; set; }
-        public decimal tmax { get; set; }
-        public decimal tmin { get; set; }
-        public decimal pavg { get; set; }
-        public decimal pmax { get; set; }
-        public decimal pmin { get; set; }
+        public double tavg { get; set; }
+        public double tmax { get; set; }
+        public double tmin { get; set; }
+        public double pavg { get; set; }
+        public double pmax { get; set; }
+        public double pmin { get; set; }
         public int paramId { get; set; }
         public Param Param { get; set; }
     }
