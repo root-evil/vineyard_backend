@@ -33,12 +33,12 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.pmin)
                 .HasColumnName("pmin");
             entity.Property(e => e.paramId)
-                .HasColumnName("params_id");
+                .HasColumnName("param_id");
 
             entity.HasOne(e => e.Param)
                 .WithMany(p => p.Details)
                 .HasForeignKey(d => d.paramId)
-                .HasConstraintName("params_id");
+                .HasConstraintName("param_id");
         }
     }
 }

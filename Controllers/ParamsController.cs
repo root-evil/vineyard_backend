@@ -15,6 +15,7 @@ namespace vineyard_backend.Controllers;
 [Produces(MediaTypeNames.Application.Json)]
 public class ParamsController : ControllerBase
 {
+    const int nearCount = 3;
     private readonly ILogger<ParamsController> logger;
     private readonly VineContext vineContext;
 
@@ -31,10 +32,25 @@ public class ParamsController : ControllerBase
     }
 
     [HttpGet("/params/{polygonId}")]
-    public async Task<IEnumerable<Param>> GetParams(
+    public async Task<Param> GetParams(
         [FromRoute] int polygonId
     )
     {
-        return await vineContext.Prams.AsNoTracking().Where(x => x.Polygon.id == polygonId).ToArrayAsync();
+        var Params = await vineContext.Prams.AsNoTracking()
+            .Where(x => x.Polygon.id == polygonId)
+            .SingleOrDefaultAsync();
+
+        Params.BetterNearPolygons = await vineContext.Polygons.AsNoTracking()
+            .Where(x => x.scoring > Params.scoring)
+            .OrderBy(x => x.scoring)
+            .Take(nearCount)
+            .ToArrayAsync();
+        Params.WorseNearPolygons = await vineContext.Polygons.AsNoTracking()
+            .Where(x => x.scoring < Params.scoring)
+            .OrderByDescending(x => x.scoring)
+            .Take(nearCount)
+            .ToArrayAsync();
+        
+        return Params;
     }
 }

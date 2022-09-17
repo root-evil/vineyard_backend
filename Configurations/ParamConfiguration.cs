@@ -17,6 +17,13 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.id)
                 .IsRequired()
                 .HasColumnName("id");
+                
+            entity.Property(e => e.scoring)
+                .HasColumnName("scoring");
+            entity.Property(e => e.floodedMonths)
+                .HasColumnName("flooded");
+            entity.Property(e => e.soil)
+                .HasColumnName("soil");
             entity.Property(e => e.min_relief_aspect)
                 .HasColumnName("min_relief_aspect");
             entity.Property(e => e.max_relief_aspect)
@@ -31,6 +38,10 @@ namespace vineyard_backend.Configuration
                 .HasColumnName("avg_relief_height");
             entity.Property(e => e.avg_relief_slope)
                 .HasColumnName("avg_relief_slope");
+            entity.Property(e => e.min_relief_slope)
+                .HasColumnName("min_relief_slope");
+            entity.Property(e => e.max_relief_slope)
+                .HasColumnName("max_relief_slope");
             entity.Property(e => e.avg_sunny_days)
                 .HasColumnName("avg_sunny_days");
             entity.Property(e => e.mix_sunny_days)
@@ -40,13 +51,6 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.water_seasonlyty)
                 .HasColumnName("water_seasonlyty");
 
-            entity.Property(e => e.polygonId)
-                .HasColumnName("polygon_id");
-
-            entity.HasOne(e => e.Polygon)
-                .WithOne(p => p.Param)
-                .HasForeignKey<Param>(d => d.polygonId)
-                .HasConstraintName("polygon_id");
         }
     }
 }

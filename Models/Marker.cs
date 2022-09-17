@@ -5,28 +5,17 @@ using vineyard_backend.Converters;
 
 namespace vineyard_backend.Models
 {
-    public class Polygon
+    public class Marker
     {
         public int id { get; set; }
         
         public int regionId { get; set; }
-
+        
         public int paramId { get; set; }
 
         public double scoring { get; set; }
 
-        public long area { get; set; }
-
-        public long freeArea { get; set; }
-
         public double[] center { get; set; }
-
-        public double width { get; set; }
-
-        public double height { get; set; }
-
-        [JsonConverter(typeof(TwoDArrayConverter<double>))]
-        public double[,] geo { get; set; }
 
         public Param Param { get; set; }
 

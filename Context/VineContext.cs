@@ -20,6 +20,7 @@ namespace vineyard_backend.Context
 
         public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<Polygon> Polygons { get; set; }
+        public virtual DbSet<Marker> Markers { get; set; }
         public virtual DbSet<Param> Prams { get; set; }
         public virtual DbSet<Detail> Details { get; set; }
 
@@ -35,6 +36,7 @@ namespace vineyard_backend.Context
 
             modelBuilder.ApplyConfiguration(new RegionConfiguration());
             modelBuilder.ApplyConfiguration(new PolygonConfiguration());
+            modelBuilder.ApplyConfiguration(new MarkerConfiguration());
             modelBuilder.ApplyConfiguration(new ParamConfiguration());
             modelBuilder.ApplyConfiguration(new DetailConfiguration());
         }

@@ -5,11 +5,11 @@ using vineyard_backend.Models;
 
 namespace vineyard_backend.Configuration
 {
-    public class PolygonConfiguration : IEntityTypeConfiguration<Polygon>
+    public class MarkerConfiguration : IEntityTypeConfiguration<Marker>
     {
-        public void Configure(EntityTypeBuilder<Polygon> entity)
+        public void Configure(EntityTypeBuilder<Marker> entity)
         {
-            entity.ToTable("polygon", "public");
+            entity.ToTable("markers", "public");
 
             entity.HasKey(e => e.id)
                 .HasName("id");
@@ -28,32 +28,16 @@ namespace vineyard_backend.Configuration
                 .HasColumnName("param_id");
 
             entity.Property(e => e.center)
-                .HasColumnName("area");
-
-            entity.Property(e => e.freeArea)
-                .HasColumnName("free_area");
-
-            entity.Property(e => e.center)
+                .HasColumnType("float[]")
                 .HasColumnName("center");
 
-            entity.Property(e => e.height)
-                .HasPrecision(20, 8)
-                .HasColumnName("height");
-
-            entity.Property(e => e.width)
-                .HasPrecision(20, 8)
-                .HasColumnName("width");
-
-            entity.Property(e => e.geo)
-                .HasColumnName("geo");
-
             entity.HasOne(e => e.Region)
-                .WithMany(p => p.Polygons)
+                .WithMany(p => p.Markers)
                 .HasForeignKey(d => d.regionId);
 
             entity.HasOne(e => e.Param)
-                .WithOne(p => p.Polygon)
-                .HasForeignKey<Polygon>(d => d.paramId)
+                .WithOne(p => p.Marker)
+                .HasForeignKey<Marker>(d => d.paramId)
                 .HasConstraintName("param_id");
 
         }

@@ -10,15 +10,17 @@ namespace vineyard_backend.Converters
             throw new NotImplementedException();
         }
         public override void Write(Utf8JsonWriter writer, T[,] val, JsonSerializerOptions options) {
-            if(val == null)
+            if(val?.Length == null)
                 writer.WriteNullValue();
             writer.WriteStartArray();
-            for(int i = 0; i < val.Length; i++)
+            var xLen = val.Length / val.Rank;
+            var yLen = val.Rank;
+            for(int i = 0; i < xLen; i++)
             {
                 writer.WriteStartArray();
-                for(int j = 0; j < val.LongLength; i++)
+                for(int j = 0; j < yLen; j++)
                 {
-                    writer.WriteNumberValue(0);
+                    writer.WriteRawValue(JsonSerializer.Serialize(val[i, j]));
                 }
                 writer.WriteEndArray();
             }

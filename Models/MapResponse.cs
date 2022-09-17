@@ -1,9 +1,10 @@
 
 namespace vineyard_backend.Models
 {
-    public class MapResponse<T>
+    public class MapResponse
     {
         public double[] center { get; set; }
-        public T data { get; set; }
+        public IEnumerable<Polygon> Polygons { get; set; }
+        public IEnumerable<Marker> Markers { get; set; }
     }
 }

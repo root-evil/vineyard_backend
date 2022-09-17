@@ -11,5 +11,6 @@ namespace vineyard_backend.Models
 
 
         public virtual ICollection<Polygon> Polygons { get; set; }
+        public virtual ICollection<Marker> Markers { get; set; }
     }
 }
