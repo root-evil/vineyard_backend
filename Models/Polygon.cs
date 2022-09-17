@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using vineyard_backend.Converters;
 
@@ -26,10 +27,14 @@ namespace vineyard_backend.Models
         [JsonConverter(typeof(TwoDArrayConverter<double>))]
         public double[,] geo { get; set; }
 
-        public int paramId { get; set; }
-        public Param Param { get; set; }
+        public int? paramId { get; set; }
 
-        public int regionId { get; set; }
-        public Region Region { get; set; }
+        [NotMapped]
+        public virtual Param? Param { get; set; }
+
+        public int? regionId { get; set; }
+
+        [NotMapped]
+        public virtual Region? Region { get; set; }
     }
 }

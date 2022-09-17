@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using vineyard_backend.Converters;
 
@@ -17,8 +18,10 @@ namespace vineyard_backend.Models
 
         public int paramId { get; set; }
 
-        public Param Param { get; set; }
+        [NotMapped]
+        public Param? Param { get; set; }
 
-        public Region Region { get; set; }
+        [NotMapped]
+        public Region? Region { get; set; }
     }
 }

@@ -47,7 +47,8 @@ namespace vineyard_backend.Configuration
             entity.HasOne(e => e.Region)
                 .WithMany(p => p.Polygons)
                 .HasForeignKey(d => d.regionId)
-                .HasConstraintName("region_id");
+                .HasConstraintName("region_id")
+                .IsRequired(false);
         }
     }
 }

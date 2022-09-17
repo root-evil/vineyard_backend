@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace vineyard_backend.Models
 {
@@ -23,23 +24,23 @@ namespace vineyard_backend.Models
         public string? floodedMonthsId { get; set; }
         public string? soilId { get; set; }
 
-        [IgnoreDataMember]
+        [NotMapped]
         public virtual Polygon? Polygon { get; set; }
-        [IgnoreDataMember]
-        public Marker? Marker { get; set; }
+        [NotMapped]
+        public virtual Marker? Marker { get; set; }
         
-        [IgnoreDataMember]
+        [NotMapped]
         public FloodedMonths? floodedMonths => Enum.Parse<FloodedMonths>(floodedMonthsId ?? "No");
 
-        [IgnoreDataMember]
+        [NotMapped]
         public Soil? soil => soilId == null ? null : Enum.Parse<Soil>(soilId);
         
         public virtual ICollection<Detail> Details { get; set; }
 
-        [IgnoreDataMember]
+        [NotMapped]
         public IEnumerable<Polygon> BetterNearPolygons { get; set; }
 
-        [IgnoreDataMember]
+        [NotMapped]
         public IEnumerable<Polygon> WorseNearPolygons { get; set; }
     }
 }

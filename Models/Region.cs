@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace vineyard_backend.Models
 {
@@ -10,7 +11,10 @@ namespace vineyard_backend.Models
         public double[] center { get; set; }
 
 
+        [NotMapped]
         public virtual ICollection<Polygon> Polygons { get; set; }
+
+        [NotMapped]
         public virtual ICollection<Marker> Markers { get; set; }
     }
 }

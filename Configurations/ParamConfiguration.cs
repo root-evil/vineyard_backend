@@ -54,12 +54,14 @@ namespace vineyard_backend.Configuration
             entity.HasOne(e => e.Polygon)
                 .WithOne(p => p.Param)
                 .HasForeignKey<Polygon>(d => d.paramId)
-                .HasConstraintName("param_id");
+                .HasConstraintName("param_id")
+                .IsRequired(false);
 
             entity.HasOne(e => e.Marker)
                 .WithOne(p => p.Param)
                 .HasForeignKey<Marker>(d => d.paramId)
-                .HasConstraintName("param_id");
+                .HasConstraintName("param_id")
+                .IsRequired(false);
 
         }
     }

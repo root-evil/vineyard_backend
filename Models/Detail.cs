@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace vineyard_backend.Models
 {
@@ -13,6 +14,8 @@ namespace vineyard_backend.Models
         public double? pmin { get; set; }
         
         public int paramId { get; set; }
+
+        [NotMapped]
         public Param Param { get; set; }
     }
 }
