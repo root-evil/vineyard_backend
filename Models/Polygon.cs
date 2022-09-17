@@ -17,6 +17,7 @@ namespace vineyard_backend.Models
 
         public long freeArea { get; set; }
 
+        [JsonConverter(typeof(CoordinatConverter))]
         public double[] center { get; set; }
 
         public double width { get; set; }

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,7 +22,11 @@ namespace vineyard_backend.Models
         public double? max_sunny_days { get; set; }
         public int? water_seasonlyty { get; set; }
         public bool? forest { get; set; }
+
+        [JsonIgnore]
         public string? floodedMonthsId { get; set; }
+
+        [JsonIgnore]
         public string? soilId { get; set; }
 
         [NotMapped]

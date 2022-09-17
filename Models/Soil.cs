@@ -4,7 +4,7 @@ namespace vineyard_backend.Models
     {
         Clay,
         SiltyClay,
-        SlityClayLoam,
+        SiltyClayLoam,
         SandyClay,
         SandyClayLoam,
         ClayLoam,

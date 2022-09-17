@@ -18,8 +18,8 @@ namespace vineyard_backend.Configuration
                 .IsRequired()
                 .HasColumnName("id");
 
-            entity.Property(e => e.date)
-                .HasColumnName("date");
+            entity.Property(e => e.monthId)
+                .HasColumnName("month");
             entity.Property(e => e.tavg)
                 .HasColumnName("tavg");
             entity.Property(e => e.tmax)

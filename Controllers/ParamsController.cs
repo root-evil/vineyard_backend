@@ -31,13 +31,13 @@ public class ParamsController : ControllerBase
         return await vineContext.Prams.AsNoTracking().ToArrayAsync();
     }
 
-    [HttpGet("/params/{polygonId}")]
+    [HttpGet("/params/{paramId}")]
     public async Task<Param> GetParams(
-        [FromRoute] int polygonId
+        [FromRoute] int paramId
     )
     {
         var Params = await vineContext.Prams.AsNoTracking()
-            .Where(x => x.Polygon.id == polygonId)
+            .Where(x => x.id == paramId)
             .SingleOrDefaultAsync();
 
         Params.BetterNearPolygons = await vineContext.Polygons.AsNoTracking()
