@@ -25,6 +25,14 @@ public class MapController : ControllerBase
         this.vineContext = vineContext;
     }
 
+    [HttpGet("/regions")]
+    public async Task<IEnumerable<Region>> GetPolygons(
+        CancellationToken cancellationToken
+    )
+    {
+        return await vineContext.Regions.AsNoTracking().ToArrayAsync(cancellationToken);
+    }
+
     /// <param name="floodedTypes">flooded types, comma separated : No, From0To1, From1To3, From3To6</param>
     /// <param name="soilTypes">soil types, comma separated : Clay, SiltyClay, SlityClayLoam, SandyClay, SandyClayLoam, ClayLoam, Silt, SiltLoam, Loam, Sand, LoamySand, SandyLoam</param>
     [HttpGet("/map")]
