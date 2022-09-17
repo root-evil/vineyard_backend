@@ -137,7 +137,7 @@ public class MapController : ControllerBase
                 width = x.width,
                 height = x.height,
                 geo = x.geo,
-                Param = x.Param,
+                paramId = x.paramId,
                 regionId = x.regionId,
                 Region = x.Region,
             })

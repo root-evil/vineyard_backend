@@ -51,7 +51,7 @@ public class ParamsController : ControllerBase
                 width = x.width,
                 height = x.height,
                 geo = x.geo,
-                Param = x.Param,
+                paramId = x.paramId,
                 regionId = x.regionId,
                 Region = x.Region,
             })
@@ -70,7 +70,7 @@ public class ParamsController : ControllerBase
                 width = x.width,
                 height = x.height,
                 geo = x.geo,
-                Param = x.Param,
+                paramId = x.paramId,
                 regionId = x.regionId,
                 Region = x.Region,
             })
