@@ -16,16 +16,7 @@ namespace vineyard_backend.Configuration
 
             entity.Property(e => e.id)
                 .IsRequired()
-                .HasColumnName("id")
-                .HasMaxLength(36);
-
-            entity.Property(e => e.regionId)
-                .IsRequired()
-                .HasColumnName("region_id")
-                .HasMaxLength(36);
-
-            entity.Property(e => e.paramId)
-                .HasColumnName("param_id");
+                .HasColumnName("id");
 
             entity.Property(e => e.center)
                 .HasColumnName("area");
@@ -47,15 +38,16 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.geo)
                 .HasColumnName("geo");
 
+            entity.Property(e => e.regionId)
+                .HasColumnName("region_id");
+
+            entity.Property(e => e.paramId)
+                .HasColumnName("param_id");
+                
             entity.HasOne(e => e.Region)
                 .WithMany(p => p.Polygons)
-                .HasForeignKey(d => d.regionId);
-
-            entity.HasOne(e => e.Param)
-                .WithOne(p => p.Polygon)
-                .HasForeignKey<Polygon>(d => d.paramId)
-                .HasConstraintName("param_id");
-
+                .HasForeignKey(d => d.regionId)
+                .HasConstraintName("region_id");
         }
     }
 }

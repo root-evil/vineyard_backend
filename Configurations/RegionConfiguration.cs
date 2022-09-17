@@ -28,8 +28,7 @@ namespace vineyard_backend.Configuration
 
             entity.Property(e => e.width)
                 .HasPrecision(20, 8)
-                .HasColumnName("width");                
-
+                .HasColumnName("width");
         }
     }
 }

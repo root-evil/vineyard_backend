@@ -32,13 +32,15 @@ namespace vineyard_backend.Configuration
                 .HasColumnName("pmax");
             entity.Property(e => e.pmin)
                 .HasColumnName("pmin");
+
             entity.Property(e => e.paramId)
                 .HasColumnName("param_id");
 
             entity.HasOne(e => e.Param)
                 .WithMany(p => p.Details)
                 .HasForeignKey(d => d.paramId)
-                .HasConstraintName("param_id");
+                .HasConstraintName("param_id")
+                .IsRequired(false);
         }
     }
 }

@@ -20,9 +20,9 @@ namespace vineyard_backend.Configuration
                 
             entity.Property(e => e.scoring)
                 .HasColumnName("scoring");
-            entity.Property(e => e.floodedMonths)
+            entity.Property(e => e.floodedMonthsId)
                 .HasColumnName("flooded");
-            entity.Property(e => e.soil)
+            entity.Property(e => e.soilId)
                 .HasColumnName("soil");
             entity.Property(e => e.min_relief_aspect)
                 .HasColumnName("min_relief_aspect");
@@ -50,6 +50,16 @@ namespace vineyard_backend.Configuration
                 .HasColumnName("man_sunny_days");
             entity.Property(e => e.water_seasonlyty)
                 .HasColumnName("water_seasonlyty");
+
+            entity.HasOne(e => e.Polygon)
+                .WithOne(p => p.Param)
+                .HasForeignKey<Polygon>(d => d.paramId)
+                .HasConstraintName("param_id");
+
+            entity.HasOne(e => e.Marker)
+                .WithOne(p => p.Param)
+                .HasForeignKey<Marker>(d => d.paramId)
+                .HasConstraintName("param_id");
 
         }
     }

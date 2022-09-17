@@ -11,6 +11,7 @@ namespace vineyard_backend.Models
         public double? pavg { get; set; }
         public double? pmax { get; set; }
         public double? pmin { get; set; }
+        
         public int paramId { get; set; }
         public Param Param { get; set; }
     }

@@ -10,12 +10,12 @@ namespace vineyard_backend.Models
         public int id { get; set; }
         
         public int regionId { get; set; }
-        
-        public int paramId { get; set; }
 
-        public double scoring { get; set; }
+        public double? scoring { get; set; }
 
         public double[] center { get; set; }
+
+        public int paramId { get; set; }
 
         public Param Param { get; set; }
 

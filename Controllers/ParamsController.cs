@@ -41,11 +41,39 @@ public class ParamsController : ControllerBase
             .SingleOrDefaultAsync();
 
         Params.BetterNearPolygons = await vineContext.Polygons.AsNoTracking()
+            .Select(x => new Polygon
+            {
+                id = x.id,
+                scoring = x.scoring,
+                area = x.area,
+                freeArea = x.freeArea,
+                center = x.center,
+                width = x.width,
+                height = x.height,
+                geo = x.geo,
+                Param = x.Param,
+                regionId = x.regionId,
+                Region = x.Region,
+            })
             .Where(x => x.scoring > Params.scoring)
             .OrderBy(x => x.scoring)
             .Take(nearCount)
             .ToArrayAsync();
         Params.WorseNearPolygons = await vineContext.Polygons.AsNoTracking()
+            .Select(x => new Polygon
+            {
+                id = x.id,
+                scoring = x.scoring,
+                area = x.area,
+                freeArea = x.freeArea,
+                center = x.center,
+                width = x.width,
+                height = x.height,
+                geo = x.geo,
+                Param = x.Param,
+                regionId = x.regionId,
+                Region = x.Region,
+            })
             .Where(x => x.scoring < Params.scoring)
             .OrderByDescending(x => x.scoring)
             .Take(nearCount)

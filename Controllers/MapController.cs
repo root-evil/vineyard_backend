@@ -118,7 +118,24 @@ public class MapController : ControllerBase
         }
 
 
-        var polygons = await queryPolygons.OrderByDescending(x => x.area).Take(limit).ToArrayAsync(cancellationToken);
+        var polygons = await queryPolygons
+            .Select(x => new Polygon
+            {
+                id = x.id,
+                scoring = x.scoring,
+                area = x.area,
+                freeArea = x.freeArea,
+                center = x.center,
+                width = x.width,
+                height = x.height,
+                geo = x.geo,
+                Param = x.Param,
+                regionId = x.regionId,
+                Region = x.Region,
+            })
+            .OrderByDescending(x => x.area)
+            .Take(limit)
+            .ToArrayAsync(cancellationToken);
         var markers = await queryMarkers.ToArrayAsync(cancellationToken);
 
         var allCenters = polygons.Select(x => x.center).ToList();
