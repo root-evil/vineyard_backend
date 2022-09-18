@@ -111,15 +111,15 @@ public class MapController : ControllerBase
         }
         if(!string.IsNullOrEmpty(floodedTypes))
         {
-            var floodedTypesEnum = floodedTypes.Split(',').Select(x => Enum.Parse<FloodedMonths>(x)).ToHashSet();
-            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
-            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
+            var floodedTypesEnum = floodedTypes.Split(',').ToHashSet();
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.floodedMonthsId == null ? floodedTypesEnum.Contains("No") : floodedTypesEnum.Contains(x.Param.floodedMonthsId));
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.floodedMonthsId == null ? floodedTypesEnum.Contains("No") :  floodedTypesEnum.Contains(x.Param.floodedMonthsId));
         }
         if(!string.IsNullOrEmpty(soilTypes))
         {
-            var soilTypesEnum = soilTypes.Split(',').Select(x => Enum.Parse<Soil>(x)).ToHashSet();
-            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.soil == null ? false : soilTypesEnum.Contains(x.Param.soil.Value));
-            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.soil == null ? false : soilTypesEnum.Contains(x.Param.soil.Value));
+            var soilTypesEnum = soilTypes.Split(',').ToHashSet();
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.soilId == null ? false : soilTypesEnum.Contains(x.Param.soilId));
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.soilId == null ? false : soilTypesEnum.Contains(x.Param.soilId));
         }
 
         double[,] boundsRes = null;
@@ -171,10 +171,10 @@ public class MapController : ControllerBase
                 ymax = Math.Max(ymax, allBound[0,1]);
                 ymax = Math.Max(ymax, allBound[1,1]);
             }
-            if(xmin != double.MinValue 
-                && ymin != double.MinValue
-                && xmax != double.MaxValue
-                && ymax != double.MaxValue)
+            if(xmin != double.MaxValue
+                && ymin != double.MaxValue
+                && xmax != double.MinValue
+                && ymax != double.MinValue)
             {
                 boundsRes = new double[2,2];
                 (boundsRes[0,0], boundsRes[0,1]) = (xmin, ymin);
