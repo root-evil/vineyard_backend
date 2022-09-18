@@ -14,7 +14,8 @@ namespace vineyard_backend.Models
 
         public double? scoring { get; set; }
 
-        public double[] center { get; set; }
+        [JsonConverter(typeof(CoordinatConverter))]
+        public double[]? center { get; set; }
 
         public int paramId { get; set; }
 

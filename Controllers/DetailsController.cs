@@ -35,6 +35,6 @@ public class DetailsController : ControllerBase
         [FromRoute] int paramId
     )
     {
-        return await vineContext.Details.AsNoTracking().Where(x => x.Param.id == paramId).ToArrayAsync();
+        return await vineContext.Details.AsNoTracking().Where(x => x.Param == null ? false : x.Param.id == paramId).ToArrayAsync();
     }
 }

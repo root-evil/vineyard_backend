@@ -40,6 +40,7 @@ public class MapController : ControllerBase
         CancellationToken cancellationToken,
         [FromQuery] int? regionId = null,
         [FromQuery] int limit = 100,
+        [FromQuery] string? bounds = null,
         [FromQuery] long? minArea = null,
         [FromQuery] long? maxArea = null,
         [FromQuery] long? minFreeArea = null,
@@ -74,57 +75,75 @@ public class MapController : ControllerBase
         }
         if(min_relief_aspect != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_aspect > min_relief_aspect);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_aspect > min_relief_aspect);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_aspect > min_relief_aspect);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_aspect > min_relief_aspect);
         }
         if(max_relief_aspect != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_aspect < max_relief_aspect);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_aspect < max_relief_aspect);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_aspect < max_relief_aspect);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_aspect < max_relief_aspect);
         }
         if(min_relief_height != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_height > min_relief_height);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_height > min_relief_height);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_height > min_relief_height);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_height > min_relief_height);
         }
         if(max_relief_height != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_height < max_relief_height);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_height < max_relief_height);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_height < max_relief_height);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_height < max_relief_height);
         }
         if(min_relief_slope != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_slope > min_relief_slope);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_slope > min_relief_slope);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_slope > min_relief_slope);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_slope > min_relief_slope);
         }
         if(max_relief_slope != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_relief_slope < max_relief_slope);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_relief_slope < max_relief_slope);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_relief_slope < max_relief_slope);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_relief_slope < max_relief_slope);
         }
         if(mix_sunny_days != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_sunny_days > mix_sunny_days);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_sunny_days > mix_sunny_days);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_sunny_days > mix_sunny_days);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_sunny_days > mix_sunny_days);
         }
         if(man_sunny_days != null)
         {
-            queryPolygons = queryPolygons.Where(x => x.Param.avg_sunny_days < man_sunny_days);
-            queryMarkers = queryMarkers.Where(x => x.Param.avg_sunny_days < man_sunny_days);
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.avg_sunny_days < man_sunny_days);
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.avg_sunny_days < man_sunny_days);
         }
         if(!string.IsNullOrEmpty(floodedTypes))
         {
             var floodedTypesEnum = floodedTypes.Split(',').Select(x => Enum.Parse<FloodedMonths>(x)).ToHashSet();
-            queryPolygons = queryPolygons.Where(x => floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
-            queryMarkers = queryMarkers.Where(x => floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : floodedTypesEnum.Contains(x.Param.floodedMonths ?? FloodedMonths.No));
         }
         if(!string.IsNullOrEmpty(soilTypes))
         {
             var soilTypesEnum = soilTypes.Split(',').Select(x => Enum.Parse<Soil>(x)).ToHashSet();
-            queryPolygons = queryPolygons.Where(x => soilTypesEnum.Contains(x.Param.soil.Value));
-            queryMarkers = queryMarkers.Where(x => soilTypesEnum.Contains(x.Param.soil.Value));
+            queryPolygons = queryPolygons.Where(x => x.Param == null ? false : x.Param.soil == null ? false : soilTypesEnum.Contains(x.Param.soil.Value));
+            queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.soil == null ? false : soilTypesEnum.Contains(x.Param.soil.Value));
         }
 
+        if(!string.IsNullOrEmpty(bounds))
+        {
+            var boundsArray = bounds.Split(',').Select(x => double.Parse(x)).ToArray();
+            if(boundsArray.Count() != 4)
+                throw new ArgumentOutOfRangeException(bounds);
+            var (xmin, ymin) = (Convert.ToDouble(boundsArray[0]), Convert.ToDouble(boundsArray[1]));
+            var (xmax, ymax) = (Convert.ToDouble(boundsArray[2]), Convert.ToDouble(boundsArray[3]));
+            queryPolygons = queryPolygons
+                .Where(x => x.center == null ? false : x.center.Length != 2 ? false :
+                    x.center[0] > xmin && x.center[0] < xmax
+                    &&
+                    x.center[1] > ymin && x.center[1] < ymax);
+            queryMarkers = queryMarkers
+                .Where(x => x.center == null ? false : x.center.Length != 2 ? false :
+                    x.center[0] > xmin && x.center[0] < xmax
+                    &&
+                    x.center[1] > ymin && x.center[1] < ymax);
+        }
 
         var polygons = await queryPolygons
             .OrderByDescending(x => x.area)
@@ -139,8 +158,8 @@ public class MapController : ControllerBase
         {
             center = allCenters.Any() ? new double[]
             {
-                allCenters.Average(x => x.FirstOrDefault()),
-                allCenters.Average(x => x.LastOrDefault()),
+                allCenters.Average(x => x == null ? 0 : x.FirstOrDefault()),
+                allCenters.Average(x => x == null ? 0 : x.LastOrDefault()),
             } : null,
             Polygons = polygons,
             Markers = markers,

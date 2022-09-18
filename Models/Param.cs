@@ -40,12 +40,12 @@ namespace vineyard_backend.Models
         [NotMapped]
         public Soil? soil => soilId == null ? null : Enum.Parse<Soil>(soilId);
         
-        public virtual ICollection<Detail> Details { get; set; }
+        public virtual ICollection<Detail>? Details { get; set; }
 
         [NotMapped]
-        public IEnumerable<Polygon> BetterNearPolygons { get; set; }
+        public IEnumerable<Polygon>? BetterNearPolygons { get; set; }
 
         [NotMapped]
-        public IEnumerable<Polygon> WorseNearPolygons { get; set; }
+        public IEnumerable<Polygon>? WorseNearPolygons { get; set; }
     }
 }

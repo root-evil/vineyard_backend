@@ -20,7 +20,7 @@ namespace vineyard_backend.Models
         public int paramId { get; set; }
 
         [NotMapped]
-        public Param Param { get; set; }
+        public Param? Param { get; set; }
 
         [NotMapped]
         public Month? Month => (Month?) monthId;
