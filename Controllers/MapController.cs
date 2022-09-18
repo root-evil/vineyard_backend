@@ -126,13 +126,18 @@ public class MapController : ControllerBase
             queryMarkers = queryMarkers.Where(x => x.Param == null ? false : x.Param.soil == null ? false : soilTypesEnum.Contains(x.Param.soil.Value));
         }
 
+        double[,] boundsRes = null;
+
         if(!string.IsNullOrEmpty(bounds))
         {
+            boundsRes = new double[2,2];
             var boundsArray = bounds.Split(',').Select(x => double.Parse(x)).ToArray();
             if(boundsArray.Count() != 4)
                 throw new ArgumentOutOfRangeException(bounds);
             var (xmin, ymin) = (Convert.ToDouble(boundsArray[0]), Convert.ToDouble(boundsArray[1]));
             var (xmax, ymax) = (Convert.ToDouble(boundsArray[2]), Convert.ToDouble(boundsArray[3]));
+            (boundsRes[0,0], boundsRes[0,1]) = (xmin, ymin);
+            (boundsRes[1,0], boundsRes[1,1]) = (xmax, ymax);
             queryPolygons = queryPolygons
                 .Where(x => x.center == null ? false : x.center.Length != 2 ? false :
                     x.center[0] > xmin && x.center[0] < xmax
@@ -151,6 +156,36 @@ public class MapController : ControllerBase
             .ToArrayAsync(cancellationToken);
         var markers = await queryMarkers.ToArrayAsync(cancellationToken);
 
+        
+        if(string.IsNullOrEmpty(bounds))
+        {
+            var allBounds = polygons.Select(x => x.bounds).ToList();
+            allBounds.AddRange(markers.Select(x => x.bounds).ToList());
+            double xmin = double.MinValue, ymin = double.MinValue, xmax = double.MaxValue, ymax = double.MaxValue;
+            foreach(var allBound in allBounds)
+            {
+                if(allBound == null) continue;
+                if(allBound.Length != 4 || allBound.Rank != 2) continue;
+                xmin = Math.Min(xmin, allBound[0,0]);
+                xmin = Math.Min(xmin, allBound[1,0]);
+                ymin = Math.Min(ymin, allBound[0,1]);
+                ymin = Math.Min(ymin, allBound[1,1]);
+                xmax = Math.Max(xmax, allBound[0,0]);
+                xmax = Math.Max(xmax, allBound[1,0]);
+                ymax = Math.Max(ymax, allBound[0,1]);
+                ymax = Math.Max(ymax, allBound[1,1]);
+            }
+            if(xmin != double.MinValue 
+                && ymin != double.MinValue
+                && xmax != double.MaxValue
+                && ymax != double.MaxValue)
+            {
+                boundsRes = new double[2,2];
+                (boundsRes[0,0], boundsRes[0,1]) = (xmin, ymin);
+                (boundsRes[1,0], boundsRes[1,1]) = (xmax, ymax);
+            }
+        }
+
         var allCenters = polygons.Select(x => x.center).ToList();
         allCenters.AddRange(markers.Select(x => x.center).ToList());
 
@@ -161,6 +196,7 @@ public class MapController : ControllerBase
                 allCenters.Average(x => x == null ? 0 : x.FirstOrDefault()),
                 allCenters.Average(x => x == null ? 0 : x.LastOrDefault()),
             } : null,
+            bounds = boundsRes,
             Polygons = polygons,
             Markers = markers,
         };

@@ -20,10 +20,8 @@ namespace vineyard_backend.Models
         [JsonConverter(typeof(CoordinatConverter))]
         public double[]? center { get; set; }
 
-        public double width { get; set; }
-
-        public double height { get; set; }
-
+        [JsonConverter(typeof(TwoDArrayConverter<double>))]
+        public double[,]? bounds { get; set; }
 
         [JsonConverter(typeof(TwoDArrayConverter<double>))]
         public double[,]? geo { get; set; }

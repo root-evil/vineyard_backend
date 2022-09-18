@@ -7,6 +7,10 @@ namespace vineyard_backend.Models
     {
         [JsonConverter(typeof(CoordinatConverter))]
         public double[]? center { get; set; }
+
+        [JsonConverter(typeof(TwoDArrayConverter<double>))]
+        public double[,]? bounds { get; set; }
+        
         public IEnumerable<Polygon>? Polygons { get; set; }
         public IEnumerable<Marker>? Markers { get; set; }
     }

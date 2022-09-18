@@ -8,12 +8,12 @@ namespace vineyard_backend.Models
     {
         public int id { get; set; }
         public string? name { get; set; }
-        public double width { get; set; }
-        public double height { get; set; }
 
         [JsonConverter(typeof(CoordinatConverter))]
         public double[]? center { get; set; }
 
+        [JsonConverter(typeof(TwoDArrayConverter<double>))]
+        public double[,]? bounds { get; set; }
 
         [NotMapped]
         public virtual ICollection<Polygon>? Polygons { get; set; }

@@ -22,6 +22,9 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.center)
                 .HasColumnName("center");
 
+            entity.Property(e => e.bounds)
+                .HasColumnName("bounds");
+
             entity.Property(e => e.regionId)
                 .HasColumnName("region_id");
 

@@ -22,13 +22,9 @@ namespace vineyard_backend.Configuration
             entity.Property(e => e.center)
                 .HasColumnName("center");
 
-            entity.Property(e => e.height)
-                .HasPrecision(20, 8)
-                .HasColumnName("height");
-
-            entity.Property(e => e.width)
-                .HasPrecision(20, 8)
-                .HasColumnName("width");
+            entity.Property(e => e.bounds)
+                .HasColumnName("bounds");
+                
         }
     }
 }

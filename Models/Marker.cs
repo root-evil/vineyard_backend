@@ -17,6 +17,9 @@ namespace vineyard_backend.Models
         [JsonConverter(typeof(CoordinatConverter))]
         public double[]? center { get; set; }
 
+        [JsonConverter(typeof(TwoDArrayConverter<double>))]
+        public double[,]? bounds { get; set; }
+
         public int paramId { get; set; }
 
         [NotMapped]
