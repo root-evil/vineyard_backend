@@ -39,6 +39,7 @@ namespace vineyard_backend.Models
         [NotMapped]
         public Soil? soil => soilId == null ? null : Enum.Parse<Soil>(soilId);
         
+        [NotMapped]
         public virtual ICollection<Detail>? Details { get; set; }
 
         [NotMapped]

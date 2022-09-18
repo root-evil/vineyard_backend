@@ -26,10 +26,10 @@ namespace vineyard_backend.Models
 
         public int? paramId { get; set; }
 
+        public int? regionId { get; set; }
+
         [NotMapped]
         public virtual Param? Param { get; set; }
-
-        public int? regionId { get; set; }
 
         [NotMapped]
         public virtual Region? Region { get; set; }
