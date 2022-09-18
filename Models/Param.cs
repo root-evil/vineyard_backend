@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace vineyard_backend.Models

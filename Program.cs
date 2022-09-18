@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Net;
 using System.Reflection;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,7 @@ using vineyard_backend.Converters;
 using vineyard_backend.Context;
 using vineyard_backend.Services;
 using vineyard_backend.Models;
+using vineyard_backend.Filters;
 
 var Port = int.Parse(Environment.GetEnvironmentVariable("VINEYARD_APP_PORT") ?? "3000");
 
@@ -40,14 +42,37 @@ builder.Services.AddDbContextPool<VineContext>(options => options.EnableSensitiv
 
 builder.Services.AddSingleton(x => new VersionService(version));
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ExceptionFilter>();
+            })
     .AddJsonOptions(options => {
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals; 
         options.JsonSerializerOptions.Converters.Add(new DoubleConverter());
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
+    }).ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errorMessage = string.Join(string.Empty, actionContext.ModelState.Values.SelectMany(item => item.Errors)
+                        .Select(err => err.ErrorMessage + " " + err.Exception));
+
+                    var errors = actionContext.ModelState.ToDictionary(error => error.Key, error => error.Value.Errors.Select(e => e.ErrorMessage).ToArray())
+                        .Where(x => x.Value.Any());
+
+                    var result = new BadRequestObjectResult(new
+                    {
+                        Code = 107,
+                        Message = "Input validation error.",
+                        Description = $"Sorry, it didn't work this time. {errorMessage}Please correct the error(s) and try again.",
+                        errors,
+                    });
+                    result.ContentTypes.Add(MediaTypeNames.Application.Json);
+                    return result;
+                };
+            });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     {

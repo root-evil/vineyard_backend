@@ -1,12 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using vineyard_backend.Models;
-using vineyard_backend.Services;
 using vineyard_backend.Context;
 
 namespace vineyard_backend.Controllers;
