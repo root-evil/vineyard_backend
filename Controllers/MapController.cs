@@ -161,7 +161,7 @@ public class MapController : ControllerBase
         {
             var allBounds = polygons.Select(x => x.bounds).ToList();
             allBounds.AddRange(markers.Select(x => x.bounds).ToList());
-            double xmin = double.MinValue, ymin = double.MinValue, xmax = double.MaxValue, ymax = double.MaxValue;
+            double xmin = double.MaxValue, ymin = double.MaxValue, xmax = double.MinValue, ymax = double.MinValue;
             foreach(var allBound in allBounds)
             {
                 if(allBound == null) continue;
