@@ -1,14 +1,9 @@
 using System.Text.Json.Serialization;
-using System.Text.Json;
 using System.Net;
 using System.Reflection;
 using System.Net.Mime;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
